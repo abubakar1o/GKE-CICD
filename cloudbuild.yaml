@@ -22,6 +22,13 @@ steps:
   id: 'Push Docker Image2'
 
 
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: ['apply', '-f', 'kubernetes/app1.yaml']
+  args: ['apply', '-f', 'kubernetes/app2.yaml']
+  env:
+    - 'CLOUDSDK_COMPUTE_ZONE=us-central1-c'
+    - 'CLOUDSDK_CONTAINER_CLUSTER=cluster-1'
+
 - name: 'google/cloud-sdk:latest'
   entrypoint: 'sh'
   args:
@@ -31,7 +38,6 @@ steps:
     gcloud deploy apply --file deploy/pipeline.yaml --region=us-central1
     gcloud deploy apply --file deploy/dev.yaml --region=us-central1
     gcloud deploy releases create 'app-release-${SHORT_SHA}' --delivery-pipeline=gke-cicd-pipeline --region=us-central1 --skaffold-file=skaffold.yaml
-
 
 options:
   logging: CLOUD_LOGGING_ONLY

@@ -21,6 +21,12 @@ steps:
   args: ['push', 'us-central1-docker.pkg.dev/dotnet-cicd-422508/gke-repo/quickstart-image2' ]
   id: 'Push Docker Image2'
 
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    gcloud container clusters get-credentials "cluster-1" --zone "us-central1-c" --project "dotnet-cicd-422508"
 
 - name: 'gcr.io/cloud-builders/kubectl'
   args: ['apply', '-f', 'kubernetes/app1.yaml']
